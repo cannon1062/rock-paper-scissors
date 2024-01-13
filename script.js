@@ -92,8 +92,8 @@ function game() {
     }
 
     if (W > L) {
-        console.log(`Overall win with ${W} win(s), ${L} loss(es) and ${numberOfGames} games played.`);
+        return `Overall win with ${W} win(s), ${L} loss(es) and ${numberOfGames} games played.`;
     } else {
-        console.log(`Overall loss with ${W} win(s), ${L} loss(es) and ${numberOfGames} games played.`);
+        return `Overall loss with ${W} win(s), ${L} loss(es) and ${numberOfGames} games played.`;
     }
 }
