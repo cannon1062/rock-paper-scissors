@@ -7,93 +7,65 @@ const choices = ["rock", "paper", "scissors"];
  }
 
 
+let result = document.querySelector('.results');
+let finalResult = document.querySelector('.final-results');
+
+ // Create buttons to play
+const btns = document.querySelectorAll('button');
+const resetButton = document.querySelector('.reset-button');
+
+let gamesPlayed = 0;
+let wins = 0;
+let losses = 0;
+let ties = 0;
+
+btns.forEach((button) => {
+    button.addEventListener('click', () => {
+        let playerSelection = button.id;
+        // console.log(playerSelection);
+        let resultArr = playRound(playerSelection);
+        if (resultArr[0] === 'win') {
+            wins++;
+            result.textContent = `Win! ${resultArr[1]} beats ${resultArr[2]}.`;
+        } else if (resultArr[0] === 'loss') {
+            losses++;
+            result.textContent = `Loss! ${resultArr[1]} loses to ${resultArr[2]}.`;
+        } else {
+            ties++;
+            result.textContent = `Tie! Go again.`
+        }
+        gamesPlayed++;
+        if (wins === 5) {
+            finalResult.textContent = `Overall Win! You won ${wins} time(s), lost ${losses} time(s), tied ${ties} time(s), and played ${gamesPlayed} games.`;
+        } else if (losses === 5) { 
+            finalResult.textContent = `Overall Loss! You won ${wins} time(s), lost ${losses} time(s), tied ${ties} time(s), and played ${gamesPlayed} games.`;
+        }  
+    });
+})
+
+resetButton.addEventListener('click', () => {
+    gamesPlayed = 0;
+    wins = 0;
+    losses = 0;
+    ties = 0;
+    result.textContent = '';
+    finalResult.textContent = '';
+})
+
 // Function to play a round of Rock Paper Scissors. Two parameters are given, and a winner is declared (ties are re-played)
-function playRound(playerSelection, computerSelection) {
+function playRound(playerSelection) {
 
-    // Convert input to all lower case 
-    playerSelection = playerSelection.toLowerCase();
+    computerSelection = getComputerChoice();
 
-    if (playerSelection === "rock") {
-
-        if (computerSelection === "rock") {
-            console.log("Tie! Play again.");
-            return "tie";
-        } else if (computerSelection === "paper") {
-            console.log("You Lose! Paper beats rock");
-            return "loss";
-        } else if (computerSelection === "scissors") {
-            console.log("You win! Rock beats scissors");
-            return "win";
-        } else {
-            console.log("I don't know what happened.");
-            return null;
-        }
-
-    } else if (playerSelection === "paper") {
-
-        if (computerSelection === "rock") {
-            console.log("You Win! Paper beats rock");
-            return "win";
-        } else if (computerSelection === "paper") {
-            console.log("Tie! Play again.");
-            return "tie";
-        } else if (computerSelection === "scissors") {
-            console.log("You Lose! Scissors beats paper");
-            return "loss";
-        } else {
-            console.log("I don't know what happened.");
-            return null;
-        }
-
-    } else if (playerSelection === "scissors") {
-
-        if (computerSelection === "rock") {
-            console.log("You Lose! Rock beats scissors");
-            return "loss";
-        } else if (computerSelection === "paper") {
-            console.log("You Win! Scissors beats paper");
-            return "win";
-        } else if (computerSelection === "scissors") {
-            console.log("Tie! Play again.");
-            return "tie";
-        } else {
-            console.log("I don't know what happened.");
-            return null;
-        }
-
+    if ((playerSelection === "rock") && (computerSelection === "scissors") ||
+        (playerSelection === "paper") && (computerSelection === "rock") ||
+        (playerSelection === "scissors") && (computerSelection === "paper")) {
+            return ['win' ,playerSelection, computerSelection];
+    } else if ((playerSelection === "rock") && (computerSelection === "paper") ||
+        (playerSelection === "paper") && (computerSelection === "scissors") ||
+        (playerSelection === "scissors") && (computerSelection === "rock")) {
+            return ['loss', playerSelection, computerSelection];
     } else {
-        console.log("You need to choose rock, paper, or scissors.");
-        return null;
-    }
-}
-
-// Function to play a best-of-five series of rock paper scissors games
-function game() {
-    let W = 0;
-    let L = 0;
-    let result = 0;
-    let i = 0;
-    let numberOfGames = 0;
-
-    while (i < 5) {
-       result = playRound(prompt('Rock, Paper, Scissors, Shoot!'), getComputerChoice());
-
-       if (result === 'win') {
-        W++;
-        i++;
-       } else if (result === 'loss') {
-        L++;
-        i++;
-       }
-       numberOfGames++;
-       if (W >= 3 || L >=3 ) {
-        break;
-       }
-    }
-
-    if (W > L) {
-        return `Overall win with ${W} win(s), ${L} loss(es) and ${numberOfGames} games played.`;
-    } else {
-        return `Overall loss with ${W} win(s), ${L} loss(es) and ${numberOfGames} games played.`;
+        return ['tie', playerSelection, playerSelection];
     }
 }
