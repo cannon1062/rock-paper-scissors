@@ -9,6 +9,8 @@ const choices = ["rock", "paper", "scissors"];
 
 let result = document.querySelector('.results');
 let finalResult = document.querySelector('.final-results');
+let selections = document.querySelector('.choices');
+let score = document.querySelector('.score');
 
  // Create buttons to play
 const btns = document.querySelectorAll('button');
@@ -24,6 +26,7 @@ btns.forEach((button) => {
         let playerSelection = button.id;
         // console.log(playerSelection);
         let resultArr = playRound(playerSelection);
+        selections.textContent = `You chose ${resultArr[1]}. Computer chose ${resultArr[2]}`;
         if (resultArr[0] === 'win') {
             wins++;
             result.textContent = `Win! ${resultArr[1]} beats ${resultArr[2]}.`;
@@ -34,6 +37,7 @@ btns.forEach((button) => {
             ties++;
             result.textContent = `Tie! Go again.`
         }
+        score.textContent = `You: ${wins} Computer: ${losses}`;
         gamesPlayed++;
         if (wins === 5) {
             finalResult.textContent = `Overall Win! You won ${wins} time(s), lost ${losses} time(s), tied ${ties} time(s), and played ${gamesPlayed} games.`;
@@ -50,6 +54,8 @@ resetButton.addEventListener('click', () => {
     ties = 0;
     result.textContent = '';
     finalResult.textContent = '';
+    selections.textContent = '';
+    score.textContent = '';
 })
 
 // Function to play a round of Rock Paper Scissors. Two parameters are given, and a winner is declared (ties are re-played)
